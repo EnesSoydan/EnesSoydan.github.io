@@ -212,128 +212,386 @@ function setLanguage(lang) {
 }
 
 
-// --- Neural Network Canvas Animation ---
+// --- CNN Computation Background ---
+// Conceptually: a never-ending convolutional network flowing from right to left.
+// Layers spawn on the right, scroll leftward, and retire on the left.
+// Neurons in adjacent layers exchange animated "values" (packets) with weights;
+// when a packet arrives at a neuron, the neuron flashes white and activation updates.
+// Active neurons fire new packets downstream → chain reaction.
 (function() {
-    const canvas = document.getElementById('neuralCanvas');
+    const canvas = document.getElementById('cnnCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    let width, height, particles, mouse;
 
-    mouse = { x: -1000, y: -1000 };
+    let W, H, DPR;
+    const LAYER_GAP = 230;           // px between consecutive layers
+    const SCROLL_SPEED = 14;         // px/sec leftward drift
+    const NEURON_R = 7;
+    const LAYER_TYPES = ['Conv', 'ReLU', 'Pool', 'Conv', 'BN', 'Conv', 'FC', 'Softmax'];
+    let typeCursor = 0;
+
+    let layers = [];
+    let packets = [];
+    let layerIdCounter = 0;
+    let lastTime = performance.now();
+    let rafId = null;
 
     function resize() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
+        DPR = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width  = Math.floor(W * DPR);
+        canvas.height = Math.floor(H * DPR);
+        canvas.style.width  = W + 'px';
+        canvas.style.height = H + 'px';
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     }
 
-    class Particle {
-        constructor() {
-            this.reset();
+    function makeLayer(x) {
+        const count = 4 + Math.floor(Math.random() * 4); // 4..7 neurons
+        const padding = Math.max(60, H * 0.12);
+        const usable = H - padding * 2;
+        const step = count > 1 ? usable / (count - 1) : 0;
+        const neurons = [];
+        for (let i = 0; i < count; i++) {
+            neurons.push({
+                y: padding + i * step + (Math.random() - 0.5) * 12,
+                activation: Math.random() * 0.4,
+                glow: 0,            // 0..1, decays
+                fireCooldown: 0     // ms, before it can fire again
+            });
+        }
+        const type = LAYER_TYPES[typeCursor % LAYER_TYPES.length];
+        typeCursor++;
+        return {
+            id: layerIdCounter++,
+            x,
+            neurons,
+            type,
+            // random "filter grid" shown below label for Conv layers
+            kernel: (type === 'Conv') ? randomKernel() : null
+        };
+    }
+
+    function randomKernel() {
+        // 3x3 grid of random small values
+        const k = [];
+        for (let i = 0; i < 9; i++) k.push((Math.random() * 2 - 1));
+        return k;
+    }
+
+    function initLayers() {
+        layers = [];
+        packets = [];
+        typeCursor = 0;
+        let x = -LAYER_GAP * 0.5;
+        while (x < W + LAYER_GAP * 2) {
+            layers.push(makeLayer(x));
+            x += LAYER_GAP;
+        }
+    }
+
+    function layerById(id) {
+        for (let i = 0; i < layers.length; i++) if (layers[i].id === id) return layers[i];
+        return null;
+    }
+
+    function spawnPacket(srcLayer, srcIdx, dstLayer, dstIdx) {
+        if (!srcLayer || !dstLayer) return;
+        if (!srcLayer.neurons[srcIdx] || !dstLayer.neurons[dstIdx]) return;
+        const weight = (Math.random() * 2 - 1);
+        const inputVal = srcLayer.neurons[srcIdx].activation;
+        // value propagated (simple w*x squashed to [0,1])
+        let raw = weight * inputVal + (Math.random() * 0.2 - 0.1);
+        const outVal = 1 / (1 + Math.exp(-raw * 3));   // sigmoid-ish
+        packets.push({
+            srcLayerId: srcLayer.id,
+            dstLayerId: dstLayer.id,
+            srcIdx, dstIdx,
+            t: 0,
+            duration: 900 + Math.random() * 700,
+            value: outVal,
+            weight: weight
+        });
+    }
+
+    function fireFromLayer(layerIdx, fanout = 1) {
+        if (layerIdx + 1 >= layers.length) return;
+        const src = layers[layerIdx];
+        const dst = layers[layerIdx + 1];
+        if (!src || !dst) return;
+        const srcIdx = Math.floor(Math.random() * src.neurons.length);
+        // fire to `fanout` distinct destinations
+        const picks = new Set();
+        while (picks.size < Math.min(fanout, dst.neurons.length)) {
+            picks.add(Math.floor(Math.random() * dst.neurons.length));
+        }
+        picks.forEach(dstIdx => spawnPacket(src, srcIdx, dst, dstIdx));
+    }
+
+    function fireFromNeuron(layerIdx, srcIdx) {
+        if (layerIdx + 1 >= layers.length) return;
+        const src = layers[layerIdx];
+        const dst = layers[layerIdx + 1];
+        if (!src || !dst) return;
+        const fanout = 1 + Math.floor(Math.random() * 2);
+        const picks = new Set();
+        while (picks.size < Math.min(fanout, dst.neurons.length)) {
+            picks.add(Math.floor(Math.random() * dst.neurons.length));
+        }
+        picks.forEach(dstIdx => spawnPacket(src, srcIdx, dst, dstIdx));
+    }
+
+    function tick(now) {
+        const dt = Math.min(now - lastTime, 60);
+        lastTime = now;
+
+        // Scroll layers leftward
+        const dx = SCROLL_SPEED * dt / 1000;
+        for (const l of layers) l.x -= dx;
+
+        // Drop off-screen layers on the left
+        while (layers.length && layers[0].x < -LAYER_GAP * 0.8) {
+            layers.shift();
+        }
+        // Spawn new layers on the right
+        while (layers.length && layers[layers.length - 1].x < W + LAYER_GAP) {
+            const lastX = layers[layers.length - 1].x;
+            layers.push(makeLayer(lastX + LAYER_GAP));
         }
 
-        reset() {
-            this.x = Math.random() * width;
-            this.y = Math.random() * height;
-            this.vx = (Math.random() - 0.5) * 0.4;
-            this.vy = (Math.random() - 0.5) * 0.4;
-            this.radius = Math.random() * 2 + 0.5;
-            this.opacity = Math.random() * 0.5 + 0.1;
+        // Advance packets
+        for (let i = packets.length - 1; i >= 0; i--) {
+            const p = packets[i];
+            p.t += dt;
+            if (p.t >= p.duration) {
+                // Activate destination neuron
+                const dstLayer = layerById(p.dstLayerId);
+                if (dstLayer && dstLayer.neurons[p.dstIdx]) {
+                    const n = dstLayer.neurons[p.dstIdx];
+                    n.glow = 1;
+                    n.activation = p.value;
+                    // Chain fire: find layer index
+                    if (n.fireCooldown <= 0) {
+                        const dstLayerIdx = layers.indexOf(dstLayer);
+                        if (dstLayerIdx >= 0) {
+                            // delay slightly by scheduling with small negative start t?
+                            // simplest: spawn immediately
+                            setTimeout(() => {
+                                if (layers.indexOf(dstLayer) >= 0) {
+                                    fireFromNeuron(dstLayerIdx, p.dstIdx);
+                                }
+                            }, 120 + Math.random() * 180);
+                            n.fireCooldown = 500 + Math.random() * 400;
+                        }
+                    }
+                }
+                packets.splice(i, 1);
+            }
         }
 
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
+        // Decay glow + cooldowns
+        for (const l of layers) {
+            for (const n of l.neurons) {
+                n.glow = Math.max(0, n.glow - dt / 900);
+                n.fireCooldown = Math.max(0, n.fireCooldown - dt);
+            }
+        }
 
-            const dx = this.x - mouse.x;
-            const dy = this.y - mouse.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 150) {
-                const force = (150 - dist) / 150;
-                this.vx += (dx / dist) * force * 0.02;
-                this.vy += (dy / dist) * force * 0.02;
+        // Periodic spontaneous firing from leftmost-ish layers (keeps chain alive)
+        if (Math.random() < dt / 450) {
+            const idx = Math.floor(Math.random() * Math.max(1, layers.length - 1));
+            fireFromLayer(idx, 1 + Math.floor(Math.random() * 2));
+        }
+
+        render();
+        rafId = requestAnimationFrame(tick);
+    }
+
+    function render() {
+        ctx.clearRect(0, 0, W, H);
+
+        // Draw connections (consecutive layers)
+        for (let li = 0; li < layers.length - 1; li++) {
+            const a = layers[li];
+            const b = layers[li + 1];
+            if (b.x < -40 || a.x > W + 40) continue;
+            for (const na of a.neurons) {
+                for (const nb of b.neurons) {
+                    const glowBoost = Math.min(na.glow, nb.glow);
+                    const opacity = 0.035 + glowBoost * 0.18;
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, na.y);
+                    ctx.lineTo(b.x, nb.y);
+                    ctx.strokeStyle = `rgba(${currentThemeRgb},${opacity})`;
+                    ctx.lineWidth = 0.5 + glowBoost * 0.6;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        // Draw packets (travelling values)
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        for (const p of packets) {
+            const a = layerById(p.srcLayerId);
+            const b = layerById(p.dstLayerId);
+            if (!a || !b) continue;
+            const na = a.neurons[p.srcIdx];
+            const nb = b.neurons[p.dstIdx];
+            if (!na || !nb) continue;
+
+            const t = p.t / p.duration;
+            // ease-in-out
+            const et = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+            const x = a.x + (b.x - a.x) * et;
+            const y = na.y + (nb.y - na.y) * et;
+
+            // trail
+            const tailT = Math.max(0, et - 0.18);
+            const tx = a.x + (b.x - a.x) * tailT;
+            const ty = na.y + (nb.y - na.y) * tailT;
+            const grad = ctx.createLinearGradient(tx, ty, x, y);
+            grad.addColorStop(0, `rgba(${currentThemeRgb},0)`);
+            grad.addColorStop(0.6, `rgba(${currentThemeRgb},0.5)`);
+            grad.addColorStop(1, `rgba(255,255,255,0.95)`);
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = 1.5;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(tx, ty);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+
+            // head dot with glow
+            ctx.shadowColor = `rgba(${currentThemeRgb},0.9)`;
+            ctx.shadowBlur = 12;
+            ctx.beginPath();
+            ctx.arc(x, y, 2.4, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255,255,255,0.95)`;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // value label (floating)
+            const labelAlpha = Math.min(1, Math.sin(t * Math.PI) * 1.4);
+            ctx.fillStyle = `rgba(255,255,255,${0.55 * labelAlpha})`;
+            ctx.fillText(p.value.toFixed(2), x, y - 9);
+
+            // mid-flight tiny computation hint: w=... (shown only near middle)
+            if (t > 0.3 && t < 0.7) {
+                const mAlpha = 1 - Math.abs(t - 0.5) * 2;
+                ctx.font = '8px "JetBrains Mono", monospace';
+                ctx.fillStyle = `rgba(${currentThemeRgb}, ${0.7 * mAlpha})`;
+                ctx.fillText(`w=${p.weight.toFixed(2)}`, x, y + 13);
+                ctx.font = '10px "JetBrains Mono", monospace';
+            }
+        }
+
+        // Draw neurons
+        for (const l of layers) {
+            for (const n of l.neurons) {
+                // Halo for glowing neurons
+                if (n.glow > 0.04) {
+                    const haloR = NEURON_R + 22 * n.glow;
+                    const hg = ctx.createRadialGradient(l.x, n.y, 0, l.x, n.y, haloR);
+                    hg.addColorStop(0, `rgba(255,255,255,${0.45 * n.glow})`);
+                    hg.addColorStop(0.4, `rgba(${currentThemeRgb},${0.35 * n.glow})`);
+                    hg.addColorStop(1, 'transparent');
+                    ctx.fillStyle = hg;
+                    ctx.beginPath();
+                    ctx.arc(l.x, n.y, haloR, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Body — gradient core
+                const g = ctx.createRadialGradient(l.x - 2, n.y - 2, 0, l.x, n.y, NEURON_R);
+                const w = n.glow; // 0..1
+                g.addColorStop(0, `rgba(255,255,255,${0.55 + 0.45 * w})`);
+                g.addColorStop(1, `rgba(${currentThemeRgb},${0.28 + 0.5 * w})`);
+                ctx.fillStyle = g;
+                ctx.beginPath();
+                ctx.arc(l.x, n.y, NEURON_R, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Ring
+                ctx.strokeStyle = `rgba(${currentThemeRgb},${0.45 + 0.5 * w})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Activation number inside
+                ctx.font = '8px "JetBrains Mono", monospace';
+                ctx.textAlign = 'center';
+                ctx.fillStyle = `rgba(255,255,255,${0.3 + 0.6 * w})`;
+                ctx.fillText(n.activation.toFixed(2), l.x, n.y + 2.5);
             }
 
-            this.vx *= 0.99;
-            this.vy *= 0.99;
+            // Layer label at top
+            ctx.font = '9px "JetBrains Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = `rgba(${currentThemeRgb},0.45)`;
+            ctx.fillText(`[${l.type}]`, l.x, Math.max(18, l.neurons[0].y - 24));
 
-            if (this.x < 0) this.x = width;
-            if (this.x > width) this.x = 0;
-            if (this.y < 0) this.y = height;
-            if (this.y > height) this.y = 0;
-        }
-
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${currentThemeRgb},${this.opacity})`;
-            ctx.fill();
-        }
-    }
-
-    function init() {
-        resize();
-        const count = Math.min(Math.floor((width * height) / 12000), 120);
-        particles = Array.from({ length: count }, () => new Particle());
-    }
-
-    function drawConnections() {
-        const maxDist = 140;
-        for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-                const dx = particles[i].x - particles[j].x;
-                const dy = particles[i].y - particles[j].y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < maxDist) {
-                    const opacity = (1 - dist / maxDist) * 0.15;
-                    ctx.beginPath();
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.strokeStyle = `rgba(${currentThemeRgb},${opacity})`;
-                    ctx.lineWidth = 0.6;
-                    ctx.stroke();
+            // Kernel grid for Conv layers (below the layer) — small 3x3 viz
+            if (l.kernel) {
+                const cellSize = 4;
+                const totalSize = 3 * cellSize + 2; // with gaps
+                const startX = l.x - totalSize / 2;
+                const bottomY = l.neurons[l.neurons.length - 1].y + 18;
+                for (let i = 0; i < 9; i++) {
+                    const col = i % 3;
+                    const row = Math.floor(i / 3);
+                    const v = l.kernel[i]; // -1..1
+                    const intensity = Math.abs(v);
+                    const isPos = v > 0;
+                    ctx.fillStyle = isPos
+                        ? `rgba(${currentThemeRgb},${0.15 + intensity * 0.5})`
+                        : `rgba(255,255,255,${0.08 + intensity * 0.25})`;
+                    ctx.fillRect(
+                        startX + col * (cellSize + 1),
+                        bottomY + row * (cellSize + 1),
+                        cellSize, cellSize
+                    );
                 }
             }
         }
     }
 
-    function animate() {
-        ctx.clearRect(0, 0, width, height);
-
-        const grad = ctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, width * 0.6);
-        grad.addColorStop(0, `rgba(${currentThemeRgb},0.02)`);
-        grad.addColorStop(1, 'transparent');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, width, height);
-
-        particles.forEach(p => {
-            p.update();
-            p.draw();
-        });
-        drawConnections();
-        requestAnimationFrame(animate);
+    function start() {
+        resize();
+        initLayers();
+        lastTime = performance.now();
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(tick);
     }
 
     window.addEventListener('resize', () => {
+        // Keep continuity — only resize, re-spread layer y's
+        const prevH = H;
         resize();
-        if (particles) {
-            const count = Math.min(Math.floor((width * height) / 12000), 120);
-            while (particles.length < count) particles.push(new Particle());
-            while (particles.length > count) particles.pop();
+        // Re-distribute neuron y positions proportionally
+        for (const l of layers) {
+            const padding = Math.max(60, H * 0.12);
+            const usable = H - padding * 2;
+            const count = l.neurons.length;
+            const step = count > 1 ? usable / (count - 1) : 0;
+            l.neurons.forEach((n, i) => {
+                n.y = padding + i * step;
+            });
         }
     });
 
-    canvas.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
+    // Pause while tab hidden (saves battery)
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = null;
+        } else if (!rafId) {
+            lastTime = performance.now();
+            rafId = requestAnimationFrame(tick);
+        }
     });
 
-    canvas.addEventListener('mouseleave', () => {
-        mouse.x = -1000;
-        mouse.y = -1000;
-    });
-
-    init();
-    animate();
+    start();
 })();
 
 
@@ -537,6 +795,101 @@ setTimeout(() => restartTypedText(), 1000);
 
         requestAnimationFrame(update);
     }
+})();
+
+
+// --- Scroll Progress Bar ---
+(function() {
+    const bar = document.getElementById('scrollProgress');
+    if (!bar) return;
+    function update() {
+        const h = document.documentElement;
+        const scrolled = h.scrollTop;
+        const max = h.scrollHeight - h.clientHeight;
+        const pct = max > 0 ? (scrolled / max) * 100 : 0;
+        bar.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+})();
+
+
+// --- Card Tilt + Spotlight ---
+(function() {
+    const cards = document.querySelectorAll('[data-tilt]');
+    if (!cards.length) return;
+    if (window.matchMedia('(hover: none)').matches) return;
+
+    const max = 6; // degrees
+
+    cards.forEach(card => {
+        let raf = null;
+        let targetRX = 0, targetRY = 0, curRX = 0, curRY = 0;
+        let mx = 50, my = 50;
+
+        function onMove(e) {
+            const r = card.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width;
+            const py = (e.clientY - r.top)  / r.height;
+            targetRY = (px - 0.5) * max * 2;   // rotateY
+            targetRX = -(py - 0.5) * max * 2;  // rotateX
+            mx = px * 100;
+            my = py * 100;
+            if (!raf) raf = requestAnimationFrame(tick);
+        }
+
+        function onLeave() {
+            targetRX = 0;
+            targetRY = 0;
+            if (!raf) raf = requestAnimationFrame(tick);
+        }
+
+        function tick() {
+            curRX += (targetRX - curRX) * 0.12;
+            curRY += (targetRY - curRY) * 0.12;
+            card.style.transform =
+                `perspective(1100px) rotateX(${curRX.toFixed(2)}deg) rotateY(${curRY.toFixed(2)}deg) translateY(-4px)`;
+            card.style.setProperty('--mx', mx + '%');
+            card.style.setProperty('--my', my + '%');
+
+            if (Math.abs(targetRX - curRX) > 0.05 || Math.abs(targetRY - curRY) > 0.05) {
+                raf = requestAnimationFrame(tick);
+            } else {
+                raf = null;
+                if (targetRX === 0 && targetRY === 0) {
+                    card.style.transform = '';
+                }
+            }
+        }
+
+        card.addEventListener('mousemove', onMove);
+        card.addEventListener('mouseleave', onLeave);
+    });
+})();
+
+
+// --- Parallax for Aurora / Orbs ---
+(function() {
+    const blobs = document.querySelectorAll('.aurora-blob');
+    const orbs  = document.querySelectorAll('.orb');
+    if (!blobs.length && !orbs.length) return;
+
+    let ty = 0;
+
+    function onScroll() {
+        ty = window.scrollY;
+        blobs.forEach((b, i) => {
+            const speed = (i + 1) * 0.04;
+            b.style.translate = `0 ${ty * speed}px`;
+        });
+        orbs.forEach((o, i) => {
+            const speed = (i % 3 + 1) * 0.08;
+            o.style.translate = `0 ${-ty * speed}px`;
+        });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
 })();
 
 

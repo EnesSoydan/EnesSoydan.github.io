@@ -10,6 +10,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Aurora / Mesh Gradient Background (site-wide) -->
+    <div class="aurora-bg" aria-hidden="true">
+        <div class="aurora-blob aurora-blob-1"></div>
+        <div class="aurora-blob aurora-blob-2"></div>
+        <div class="aurora-blob aurora-blob-3"></div>
+        <div class="aurora-blob aurora-blob-4"></div>
+        <div class="aurora-grid"></div>
+        <div class="aurora-noise"></div>
+    </div>
+
+    <!-- Site-wide CNN computation background -->
+    <canvas id="cnnCanvas" class="cnn-bg" aria-hidden="true"></canvas>
+
     <!-- Cursor glow -->
     <div class="cursor-glow" id="cursorGlow"></div>
 
@@ -56,7 +72,11 @@
 
     <!-- Hero Section -->
     <section class="hero" id="hero">
-        <canvas id="neuralCanvas"></canvas>
+        <div class="hero-rings" aria-hidden="true">
+            <span class="hero-ring hero-ring-1"></span>
+            <span class="hero-ring hero-ring-2"></span>
+            <span class="hero-ring hero-ring-3"></span>
+        </div>
         <div class="hero-content">
             <div class="hero-badge reveal-up">
                 <span class="badge-dot"></span>
@@ -114,6 +134,33 @@
             <div class="scroll-line"></div>
         </div>
     </section>
+
+    <!-- Marquee Strip -->
+    <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+            <span class="marquee-item">COMPUTER VISION</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">YOLO</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">DEEP LEARNING</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">PYTORCH</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">OBJECT DETECTION</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">REAL-TIME INFERENCE</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">GRAD-CAM</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">t-SNE</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">OPENCV</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">ANPR</span><span class="marquee-dot">◆</span>
+            <!-- duplicate for seamless loop -->
+            <span class="marquee-item">COMPUTER VISION</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">YOLO</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">DEEP LEARNING</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">PYTORCH</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">OBJECT DETECTION</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">REAL-TIME INFERENCE</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">GRAD-CAM</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">t-SNE</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">OPENCV</span><span class="marquee-dot">◆</span>
+            <span class="marquee-item">ANPR</span><span class="marquee-dot">◆</span>
+        </div>
+    </div>
 
     <!-- About Section -->
     <section class="section about" id="about">
@@ -221,9 +268,9 @@
 
             <!-- Project 1: PlakaTespit -->
             <div class="project-card reveal-up" id="project1">
-                <div class="project-card-inner">
+                <div class="project-card-inner" data-tilt>
                     <div class="project-visual">
-                        <div class="project-img-wrapper">
+                        <div class="project-img-wrapper shine">
                             <img src="assets/projects/plaka_demo.jpg" alt="Plaka Tespit Uygulaması" class="project-img">
                             <div class="project-img-overlay">
                                 <img src="assets\projects\plaka_tespit_ui.png" alt="Uygulama Arayüzü" class="project-img-hover">
@@ -271,7 +318,7 @@
 
             <!-- Project 2: Annotie / LabelEditor -->
             <div class="project-card reverse reveal-up" id="project2">
-                <div class="project-card-inner">
+                <div class="project-card-inner" data-tilt>
                     <div class="project-visual">
                         <div class="project-img-wrapper annotie-wrapper">
                             <img src="assets/projects/annotie_icon.png" alt="Annotie" class="project-img annotie-logo">
@@ -321,7 +368,7 @@
 
             <!-- Project 3: YOLO Visualizer -->
             <div class="project-card reveal-up" id="project3">
-                <div class="project-card-inner">
+                <div class="project-card-inner" data-tilt>
                     <div class="project-visual">
                         <div class="project-img-wrapper yolo-vis-wrapper">
                             <img src="assets/projects/yolo_gradcam.png" alt="YOLO Visualizer Grad-CAM" class="project-img">
@@ -370,9 +417,9 @@
             </div>
             <!-- Project 4: YOLO Monitor -->
             <div class="project-card reverse reveal-up" id="project4">
-                <div class="project-card-inner">
+                <div class="project-card-inner" data-tilt>
                     <div class="project-visual">
-                        <div class="project-img-wrapper">
+                        <div class="project-img-wrapper shine">
                             <img src="assets/projects/yolo_monitor_train.png" alt="YOLO Monitor Eğitim" class="project-img">
                             <div class="project-img-overlay">
                                 <img src="assets/projects/yolo_monitor_test.png" alt="YOLO Monitor Tespit" class="project-img-hover">
@@ -430,6 +477,13 @@
                 </h2>
             </div>
             <div class="tech-orbit reveal-up">
+                <div class="orbit-rings" aria-hidden="true">
+                    <span class="orbit-ring orbit-ring-1"></span>
+                    <span class="orbit-ring orbit-ring-2"></span>
+                    <span class="orbit-ring orbit-ring-3"></span>
+                    <span class="orbit-satellite orbit-satellite-1"></span>
+                    <span class="orbit-satellite orbit-satellite-2"></span>
+                </div>
                 <div class="orbit-center">
                     <span>AI<br>&<br>CV</span>
                 </div>
