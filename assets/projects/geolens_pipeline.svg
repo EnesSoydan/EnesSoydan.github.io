@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">GeoLens visual geo-localization pipeline</title>
+  <desc id="desc">A street photo is encoded with DINOv2 and SALAD, searched in FAISS, then explained with a map and Eigen-CAM.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#06151b"/>
+      <stop offset="1" stop-color="#0b2931"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#18d6a0"/>
+      <stop offset="1" stop-color="#4aa8ff"/>
+    </linearGradient>
+    <radialGradient id="heat" cx="50%" cy="48%" r="55%">
+      <stop offset="0" stop-color="#ffcf4d" stop-opacity=".95"/>
+      <stop offset=".38" stop-color="#ff6b55" stop-opacity=".72"/>
+      <stop offset="1" stop-color="#ff406f" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1000" rx="34" fill="url(#bg)"/>
+  <path d="M0 126H1600M0 874H1600" stroke="#b9fff0" stroke-opacity=".08"/>
+  <g fill="#d9fff6" font-family="Inter,Segoe UI,sans-serif">
+    <text x="86" y="96" font-size="34" font-weight="700" letter-spacing="7">GEOLENS</text>
+    <text x="86" y="142" font-size="22" fill="#8bbab3" letter-spacing="3">RETRIEVAL-FIRST VISUAL GEO-LOCALIZATION</text>
+    <text x="1510" y="105" font-size="18" text-anchor="end" fill="#53e5b5">COPENHAGEN + SAN FRANCISCO</text>
+  </g>
+
+  <g transform="translate(86 238)">
+    <rect width="300" height="470" rx="28" fill="#0d2329" stroke="#58d9b4" stroke-opacity=".38"/>
+    <rect x="24" y="24" width="252" height="284" rx="20" fill="#17343a"/>
+    <path d="M24 219L89 158l58 46 47-79 82 94v89H24Z" fill="#1d5d62"/>
+    <circle cx="218" cy="82" r="30" fill="#88d9bd" opacity=".76"/>
+    <path d="M64 274V92m48 182V136m48 138V102m48 172V154" stroke="#9af4d6" stroke-width="10" stroke-linecap="round" opacity=".42"/>
+    <rect x="24" y="334" width="118" height="42" rx="21" fill="#173a39"/>
+    <text x="83" y="362" text-anchor="middle" fill="#65e6b9" font-family="Inter,Segoe UI,sans-serif" font-size="18" font-weight="700">QUERY</text>
+    <text x="24" y="414" fill="#e4fff8" font-family="Inter,Segoe UI,sans-serif" font-size="26" font-weight="700">Street-level photo</text>
+    <text x="24" y="449" fill="#8bbab3" font-family="Inter,Segoe UI,sans-serif" font-size="18">EXIF-normalized input</text>
+  </g>
+
+  <g stroke="url(#accent)" stroke-width="8" stroke-linecap="round" fill="none" filter="url(#glow)">
+    <path d="M416 474H508"/>
+    <path d="M840 474H932"/>
+    <path d="M1264 474H1350"/>
+  </g>
+  <g fill="#43ddb1">
+    <path d="M508 474l-25-16v32Z"/><path d="M932 474l-25-16v32Z"/><path d="M1350 474l-25-16v32Z"/>
+  </g>
+
+  <g transform="translate(538 274)" font-family="Inter,Segoe UI,sans-serif">
+    <rect width="272" height="400" rx="28" fill="#0d2329" stroke="#58d9b4" stroke-opacity=".38"/>
+    <circle cx="136" cy="108" r="68" fill="#133b3c" stroke="#42dfaf" stroke-width="3"/>
+    <path d="M101 96h70M101 116h70M112 76v60m24-60v60m24-60v60" stroke="#63e8c0" stroke-width="6" stroke-linecap="round"/>
+    <text x="136" y="216" text-anchor="middle" fill="#e4fff8" font-size="28" font-weight="700">DINOv2 + SALAD</text>
+    <text x="136" y="256" text-anchor="middle" fill="#8bbab3" font-size="18">Visual descriptor</text>
+    <rect x="36" y="296" width="200" height="56" rx="14" fill="#113238"/>
+    <text x="136" y="332" text-anchor="middle" fill="#5fe6bc" font-size="22" font-weight="700">8,448-D EMBEDDING</text>
+  </g>
+
+  <g transform="translate(962 274)" font-family="Inter,Segoe UI,sans-serif">
+    <rect width="272" height="400" rx="28" fill="#0d2329" stroke="#58d9b4" stroke-opacity=".38"/>
+    <g transform="translate(54 51)" fill="#54d9b4">
+      <circle cx="18" cy="26" r="13"/><circle cx="73" cy="14" r="13"/><circle cx="126" cy="35" r="13"/>
+      <circle cx="41" cy="82" r="13"/><circle cx="104" cy="91" r="13"/><circle cx="157" cy="75" r="13"/>
+      <circle cx="14" cy="137" r="13"/><circle cx="77" cy="145" r="13"/><circle cx="137" cy="132" r="13"/>
+    </g>
+    <text x="136" y="242" text-anchor="middle" fill="#e4fff8" font-size="32" font-weight="700">FAISS</text>
+    <text x="136" y="280" text-anchor="middle" fill="#8bbab3" font-size="18">Cosine similarity search</text>
+    <rect x="46" y="314" width="180" height="48" rx="24" fill="#153a39"/>
+    <text x="136" y="345" text-anchor="middle" fill="#67e8bd" font-size="20" font-weight="700">TOP-K REFERENCES</text>
+  </g>
+
+  <g transform="translate(1378 248)" font-family="Inter,Segoe UI,sans-serif">
+    <rect width="136" height="452" rx="28" fill="#0d2329" stroke="#58d9b4" stroke-opacity=".38"/>
+    <path d="M25 36h86v166H25Z" fill="#17343a"/>
+    <path d="M25 88l31-20 21 27 34-39m-76 97 24-21 22 12 30-25" fill="none" stroke="#70b9af" stroke-width="5"/>
+    <circle cx="81" cy="113" r="40" fill="url(#heat)"/>
+    <circle cx="81" cy="113" r="7" fill="#fff1a8"/>
+    <path d="M68 235c-28 0-50 22-50 50 0 42 50 88 50 88s50-46 50-88c0-28-22-50-50-50Zm0 68a18 18 0 1 1 0-36 18 18 0 0 1 0 36Z" fill="#48dfb1"/>
+    <text x="68" y="408" text-anchor="middle" fill="#e4fff8" font-size="18" font-weight="700">MAP</text>
+    <text x="68" y="435" text-anchor="middle" fill="#82bbb0" font-size="14">+ EIGEN-CAM</text>
+  </g>
+
+  <g font-family="Inter,Segoe UI,sans-serif">
+    <rect x="86" y="790" width="1428" height="100" rx="24" fill="#0c2026" stroke="#9effe4" stroke-opacity=".18"/>
+    <text x="126" y="835" fill="#86b9b1" font-size="18" letter-spacing="2">OUTPUT</text>
+    <text x="126" y="867" fill="#e4fff8" font-size="26" font-weight="700">Predicted coordinate · nearest reference · explainability heatmap</text>
+    <text x="1468" y="854" text-anchor="end" fill="#57e0b5" font-size="24" font-weight="700">RETRIEVE → LOCATE → EXPLAIN</text>
+  </g>
+</svg>

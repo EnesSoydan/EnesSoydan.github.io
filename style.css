@@ -1294,6 +1294,11 @@ body {
     object-fit: cover;
 }
 
+.project-img-contain {
+    object-fit: contain;
+    background: #080b0e;
+}
+
 .project-img-wrapper:hover .project-img:not(.annotie-logo) {
     transform: scale(1.05);
 }

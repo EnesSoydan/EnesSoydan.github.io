@@ -115,7 +115,7 @@
             </div>
             <div class="hero-stats reveal-up" style="animation-delay: 0.8s">
                 <div class="stat">
-                    <span class="stat-number" data-count="4">0</span><span class="stat-plus">+</span>
+                    <span class="stat-number" data-count="8">0</span><span class="stat-plus">+</span>
                     <span class="stat-label" data-i18n="stat_projects">Proje</span>
                 </div>
                 <div class="stat-divider"></div>
@@ -456,6 +456,203 @@
                         </div>
                         <div class="project-links">
                             <a href="https://github.com/EnesSoydan/Yolo-Training-and-Inference" target="_blank" class="project-link">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                                <span data-i18n="source_code">Kaynak Kod</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 5: Temassız Parmak İzi Kalite Analizi -->
+            <div class="project-card reveal-up" id="project5">
+                <div class="project-card-inner" data-tilt>
+                    <div class="project-visual">
+                        <div class="project-img-wrapper shine">
+                            <img src="assets/projects/fingerprint_live_obb.png" alt="Canlı OBB parmak ucu tespiti" class="project-img" loading="lazy">
+                            <div class="project-img-overlay">
+                                <img src="assets/projects/fingerprint_quality_pipeline.png" alt="Parmak izi ridge, iskelet ve minutiae kalite analizi" class="project-img-hover project-img-contain" loading="lazy">
+                            </div>
+                        </div>
+                        <div class="project-number">05</div>
+                    </div>
+                    <div class="project-info">
+                        <div class="project-tags">
+                            <span class="tag">Expo</span>
+                            <span class="tag">YOLO OBB</span>
+                            <span class="tag">ONNX Runtime</span>
+                            <span class="tag">Biometrics</span>
+                        </div>
+                        <h3 class="project-title" data-i18n="p5_title">Temassız Parmak İzi Kalite Analizi</h3>
+                        <p class="project-desc" data-i18n="p5_desc">
+                            Telefon kamerasından alınan parmak ucu görüntülerini YOLO OBB ile tespit eden;
+                            homografiyle kanonik ROI'ye hizalayıp segmentation, ridge/minutiae analizi ve
+                            yerel 1:N eşleştirme yapan mobil araştırma prototipi.
+                        </p>
+                        <div class="project-features">
+                            <div class="feature">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                <span data-i18n="p5_f1">Cihaz üzerinde YOLO OBB + ONNX inference</span>
+                            </div>
+                            <div class="feature">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                <span data-i18n="p5_f2">Ridge, skeleton ve minutiae kalite analizi</span>
+                            </div>
+                            <div class="feature">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                <span data-i18n="p5_f3">Şifreli yerel enrollment ve 1:N eşleştirme</span>
+                            </div>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/EnesSoydan/temassiz-parmak-izi-kalite-analizi" target="_blank" rel="noopener noreferrer" class="project-link">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                                <span data-i18n="source_code">Kaynak Kod</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 6: ISTIKLAL TEKNOFEST -->
+            <div class="project-card reverse reveal-up" id="project6">
+                <div class="project-card-inner" data-tilt>
+                    <div class="project-visual">
+                        <div class="project-img-wrapper shine">
+                            <img src="assets/projects/istiklal_cockpit_balloons.png" alt="İSTİKLAL canlı nesne tespiti ve dijital ikiz kokpiti" class="project-img" loading="lazy">
+                            <div class="project-img-overlay">
+                                <img src="assets/projects/istiklal_cockpit_aircraft.png" alt="İSTİKLAL hava aracı tespiti ve takip arayüzü" class="project-img-hover" loading="lazy">
+                            </div>
+                        </div>
+                        <div class="project-number">06</div>
+                    </div>
+                    <div class="project-info">
+                        <div class="project-tags">
+                            <span class="tag">TEKNOFEST</span>
+                            <span class="tag">YOLO</span>
+                            <span class="tag">OpenCV</span>
+                            <span class="tag">Dataset Curation</span>
+                        </div>
+                        <h3 class="project-title" data-i18n="p6_title">İSTİKLAL — TEKNOFEST Hava Savunma Sistemi</h3>
+                        <p class="project-desc" data-i18n="p6_desc">
+                            TEKNOFEST hava savunma senaryoları için geliştirilen, canlı kamerada hava araçları
+                            ve balonları tespit edip takip eden komuta-kontrol sistemi. Projedeki katkım; temiz
+                            veri seti oluşturma, nesne tespiti modelleri, makine öğrenmesi ve OpenCV tabanlı
+                            görüntü/renk filtreleriydi.
+                        </p>
+                        <div class="project-features">
+                            <div class="feature">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                <span data-i18n="p6_f1">YOLO ile çok sınıflı gerçek zamanlı nesne tespiti</span>
+                            </div>
+                            <div class="feature">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                <span data-i18n="p6_f2">Veri temizleme, etiket doğrulama ve model eğitimi</span>
+                            </div>
+                            <div class="feature">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                <span data-i18n="p6_f3">OpenCV/HSV renk filtreleri ve hedef ayrımı</span>
+                            </div>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/lprnmns/teknofest-balon-takip-sistemi" target="_blank" rel="noopener noreferrer" class="project-link">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                                <span data-i18n="source_code">Kaynak Kod</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 7: WarShip Rating -->
+            <div class="project-card reveal-up" id="project7">
+                <div class="project-card-inner" data-tilt>
+                    <div class="project-visual">
+                        <div class="project-img-wrapper shine">
+                            <img src="assets/projects/warship_two_stage_sahi.png" alt="WarShip Rating gemi ve donanım tespiti" class="project-img" loading="lazy">
+                            <div class="project-img-overlay">
+                                <img src="assets/projects/warship_unity_rating.png" alt="Unity sentetik gemi verisinde sınıflandırma ve güç analizi" class="project-img-hover" loading="lazy">
+                            </div>
+                        </div>
+                        <div class="project-number">07</div>
+                    </div>
+                    <div class="project-info">
+                        <div class="project-tags">
+                            <span class="tag">YOLO26s</span>
+                            <span class="tag">SAHI</span>
+                            <span class="tag">Unity 3D</span>
+                            <span class="tag">Tkinter</span>
+                        </div>
+                        <h3 class="project-title">WarShip Rating</h3>
+                        <p class="project-desc" data-i18n="p7_desc">
+                            Unity 3D ile üretilen sentetik verilerden savaş gemilerini ve üzerlerindeki silah
+                            sistemlerini iki aşamalı YOLO hattıyla tespit eden masaüstü uygulaması. SAHI ile
+                            küçük donanımları bulur ve her gemi için sayısal bir güç puanı hesaplar.
+                        </p>
+                        <div class="project-features">
+                            <div class="feature">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                <span data-i18n="p7_f1">4 gemi ve 3 donanım sınıfı</span>
+                            </div>
+                            <div class="feature">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                <span data-i18n="p7_f2">Unity ile sentetik, otomatik etiketli veri üretimi</span>
+                            </div>
+                            <div class="feature">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                <span data-i18n="p7_f3">Gemi mAP@0.5: 0.995 · Donanım: 0.982</span>
+                            </div>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/EnesSoydan/WarShip_Rating" target="_blank" rel="noopener noreferrer" class="project-link">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                                <span data-i18n="source_code">Kaynak Kod</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 8: GeoLens -->
+            <div class="project-card reverse reveal-up" id="project8">
+                <div class="project-card-inner" data-tilt>
+                    <div class="project-visual">
+                        <div class="project-img-wrapper shine">
+                            <img src="assets/projects/geolens_pipeline.svg" alt="GeoLens DINOv2, SALAD ve FAISS görsel konumlandırma hattı" class="project-img" loading="lazy">
+                            <div class="project-img-overlay">
+                                <img src="assets/projects/geolens_metrics.svg" alt="GeoLens MSLS validation performans sonuçları" class="project-img-hover" loading="lazy">
+                            </div>
+                        </div>
+                        <div class="project-number">08</div>
+                    </div>
+                    <div class="project-info">
+                        <div class="project-tags">
+                            <span class="tag">DINOv2</span>
+                            <span class="tag">SALAD</span>
+                            <span class="tag">FAISS</span>
+                            <span class="tag">Eigen-CAM</span>
+                        </div>
+                        <h3 class="project-title" data-i18n="p8_title">GeoLens — Açıklanabilir Görsel Konumlandırma</h3>
+                        <p class="project-desc" data-i18n="p8_desc">
+                            Bir sokak fotoğrafını DINOv2 + SALAD ile 8.448 boyutlu embedding'e dönüştürüp
+                            FAISS indeksinde en benzer referansları arayan retrieval-first sistem. Koordinat
+                            tahminini haritada ve Eigen-CAM ısı haritasıyla açıklanabilir biçimde sunar.
+                        </p>
+                        <div class="project-features">
+                            <div class="feature">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                <span data-i18n="p8_f1">DINOv2 + SALAD ve FAISS benzerlik araması</span>
+                            </div>
+                            <div class="feature">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                <span data-i18n="p8_f2">Eigen-CAM ile açıklanabilir konum tahmini</span>
+                            </div>
+                            <div class="feature">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                <span data-i18n="p8_f3">MSLS-val: R@1: %91,9 · R@5: %96,4 · medyan 8 m</span>
+                            </div>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/EnesSoydan/GeoLens" target="_blank" rel="noopener noreferrer" class="project-link">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
                                 <span data-i18n="source_code">Kaynak Kod</span>
                             </a>
