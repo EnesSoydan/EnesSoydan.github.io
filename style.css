@@ -1404,6 +1404,17 @@ body {
     transform: translateY(-2px);
 }
 
+.project-link-private {
+    opacity: 0.7;
+    cursor: default;
+}
+
+.project-link-private:hover {
+    border-color: var(--border);
+    background: rgba(255, 255, 255, 0.04);
+    transform: none;
+}
+
 /* --- Tech Section --- */
 .tech-orbit {
     position: relative;
