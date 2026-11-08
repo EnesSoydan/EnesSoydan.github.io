@@ -3,831 +3,406 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Enes Soydan — Bilgisayarlı görme ve derin öğrenme geliştiricisi. Nesne tespiti, model eğitimi ve masaüstü araçlar.">
+    <meta name="color-scheme" content="dark">
     <title>Enes Soydan | Yapay Zeka & Bilgisayarlı Görme</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Scroll Progress Bar -->
-    <div class="scroll-progress" id="scrollProgress"></div>
+    <!-- Reusable icons -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></symbol>
+        <symbol id="i-linkedin" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></symbol>
+        <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/></g></symbol>
+        <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8M17 7v9"/></symbol>
+    </svg>
 
-    <!-- Aurora / Mesh Gradient Background (site-wide) -->
-    <div class="aurora-bg" aria-hidden="true">
-        <div class="aurora-blob aurora-blob-1"></div>
-        <div class="aurora-blob aurora-blob-2"></div>
-        <div class="aurora-blob aurora-blob-3"></div>
-        <div class="aurora-blob aurora-blob-4"></div>
-        <div class="aurora-grid"></div>
-        <div class="aurora-noise"></div>
-    </div>
+    <a class="skip-link" href="#projects" data-i18n="skip">İçeriğe geç</a>
 
-    <!-- Site-wide CNN computation background -->
-    <canvas id="cnnCanvas" class="cnn-bg" aria-hidden="true"></canvas>
-
-    <!-- Cursor glow -->
-    <div class="cursor-glow" id="cursorGlow"></div>
-
-    <!-- Navigation -->
-    <nav class="nav" id="nav">
-        <div class="nav-logo">
-            <span class="nav-logo-bracket">&lt;</span>ES<span class="nav-logo-bracket">/&gt;</span>
-        </div>
-        <div class="nav-links">
-            <a href="#hero" class="nav-link active" data-section="hero" data-i18n="nav_home">Ana Sayfa</a>
-            <a href="#about" class="nav-link" data-section="about" data-i18n="nav_about">Hakkımda</a>
-            <a href="#projects" class="nav-link" data-section="projects" data-i18n="nav_projects">Projeler</a>
-            <a href="#tech" class="nav-link" data-section="tech" data-i18n="nav_tech">Teknolojiler</a>
-            <a href="#contact" class="nav-link" data-section="contact" data-i18n="nav_contact">İletişim</a>
-        </div>
-        <div class="nav-right">
-            <div class="theme-switch" id="themeSwitch">
-                <span class="theme-dot active" data-theme="forest" title="Forest"></span>
-                <span class="theme-dot" data-theme="ember" title="Ember"></span>
-                <span class="theme-dot" data-theme="arctic" title="Arctic"></span>
-                <span class="theme-dot" data-theme="rose" title="Rose"></span>
-            </div>
-            <div class="lang-switch" id="langSwitch">
-                <span class="lang-option active" data-lang="tr">TR</span>
-                <span class="lang-divider">|</span>
-                <span class="lang-option" data-lang="en">EN</span>
-            </div>
-            <div class="nav-hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="#hero" class="mobile-link" data-i18n="nav_home">Ana Sayfa</a>
-        <a href="#about" class="mobile-link" data-i18n="nav_about">Hakkımda</a>
-        <a href="#projects" class="mobile-link" data-i18n="nav_projects">Projeler</a>
-        <a href="#tech" class="mobile-link" data-i18n="nav_tech">Teknolojiler</a>
-        <a href="#contact" class="mobile-link" data-i18n="nav_contact">İletişim</a>
-    </div>
-
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-        <div class="hero-rings" aria-hidden="true">
-            <span class="hero-ring hero-ring-1"></span>
-            <span class="hero-ring hero-ring-2"></span>
-            <span class="hero-ring hero-ring-3"></span>
-        </div>
-        <div class="hero-content">
-            <div class="hero-badge reveal-up">
-                <span class="badge-dot"></span>
-                <span data-i18n="hero_badge">Yapay Zeka & Bilgisayarlı Görme Geliştirici</span>
-            </div>
-            <div class="hero-intro reveal-up" style="animation-delay: 0.2s">
-                <div class="hero-photo-wrapper">
-                    <div class="hero-photo-ring"></div>
-                    <img src="assets/profile.jpg" alt="Enes Soydan" class="hero-photo">
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <a href="#top" class="brand">Enes Soydan</a>
+            <nav class="nav" id="nav" aria-label="Ana menü">
+                <a href="#top" class="nav-link is-active" data-section="top" data-i18n="nav_home">Ana sayfa</a>
+                <a href="#projects" class="nav-link" data-section="projects" data-i18n="nav_projects">Projeler</a>
+                <a href="#about" class="nav-link" data-section="about" data-i18n="nav_about">Hakkımda</a>
+                <a href="#tools" class="nav-link" data-section="tools" data-i18n="nav_tools">Araçlar</a>
+                <a href="#contact" class="nav-link" data-section="contact" data-i18n="nav_contact">İletişim</a>
+            </nav>
+            <div class="header-actions">
+                <div class="lang" role="group" aria-label="Dil / Language">
+                    <button type="button" class="lang-btn is-active" data-lang="tr" aria-pressed="true">TR</button>
+                    <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
                 </div>
-                <h1 class="hero-title">
-                    <span class="hero-line" data-i18n="hero_greeting">Merhaba, ben</span>
-                    <span class="hero-name">
-                        <span class="gradient-text">Enes Soydan</span>
-                    </span>
-                </h1>
-            </div>
-            <p class="hero-subtitle reveal-up" style="animation-delay: 0.4s">
-                <span data-i18n="hero_subtitle">Derin öğrenme modelleri ile gerçek dünya problemlerini çözüyorum.</span>
-                <br>
-                <span class="typed-text" id="typedText"></span><span class="typed-cursor">|</span>
-            </p>
-            <div class="hero-cta reveal-up" style="animation-delay: 0.6s">
-                <a href="#projects" class="btn btn-primary">
-                    <span data-i18n="hero_cta">Projeleri Gör</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M7 17L17 7M17 7H7M17 7V17"/>
-                    </svg>
-                </a>
-                <a href="https://github.com/EnesSoydan" target="_blank" class="btn btn-ghost">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                    </svg>
-                    <span>GitHub</span>
-                </a>
-            </div>
-            <div class="hero-stats reveal-up" style="animation-delay: 0.8s">
-                <div class="stat">
-                    <span class="stat-number" data-count="8">0</span><span class="stat-plus">+</span>
-                    <span class="stat-label" data-i18n="stat_projects">Proje</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat">
-                    <span class="stat-number" data-count="5">0</span><span class="stat-plus">+</span>
-                    <span class="stat-label" data-i18n="stat_tech">Teknoloji</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat">
-                    <span class="stat-number" data-count="10000">0</span><span class="stat-plus">+</span>
-                    <span class="stat-label" data-i18n="stat_lines">Satır Kod</span>
-                </div>
+                <button type="button" class="menu-btn" id="menuBtn" aria-label="Menü" aria-expanded="false" aria-controls="nav">
+                    <span></span><span></span>
+                </button>
             </div>
         </div>
-        <div class="scroll-indicator">
-            <div class="scroll-line"></div>
-        </div>
-    </section>
+    </header>
 
-    <!-- Marquee Strip -->
-    <div class="marquee" aria-hidden="true">
-        <div class="marquee-track">
-            <span class="marquee-item">COMPUTER VISION</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">YOLO</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">DEEP LEARNING</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">PYTORCH</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">OBJECT DETECTION</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">REAL-TIME INFERENCE</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">GRAD-CAM</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">t-SNE</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">OPENCV</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">ANPR</span><span class="marquee-dot">◆</span>
-            <!-- duplicate for seamless loop -->
-            <span class="marquee-item">COMPUTER VISION</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">YOLO</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">DEEP LEARNING</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">PYTORCH</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">OBJECT DETECTION</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">REAL-TIME INFERENCE</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">GRAD-CAM</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">t-SNE</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">OPENCV</span><span class="marquee-dot">◆</span>
-            <span class="marquee-item">ANPR</span><span class="marquee-dot">◆</span>
-        </div>
-    </div>
-
-    <!-- About Section -->
-    <section class="section about" id="about">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag reveal-up" data-i18n="about_tag">// HAKKIMDA</span>
-                <h2 class="section-title reveal-up">
-                    <span data-i18n="about_title_1">Yapay zeka ile</span>
-                    <span class="gradient-text" data-i18n="about_title_2">gerçek çözümler</span>
-                </h2>
-            </div>
-            <div class="about-grid">
-                <div class="about-text reveal-left">
-                    <p data-i18n="about_p1">
-                        Bilgisayarlı görme (Computer Vision) ve derin öğrenme alanlarında
-                        çalışıyorum. YOLO tabanlı nesne tespit modelleri, görüntü işleme
-                        ve veri etiketleme araçları geliştiriyorum.
+    <main id="top">
+        <!-- Hero -->
+        <section class="hero">
+            <div class="container hero-grid">
+                <div class="hero-main">
+                    <p class="eyebrow">
+                        <span class="status-dot" aria-hidden="true"></span>
+                        <span data-i18n="hero_eyebrow">Bilgisayarlı Görme · Yapay Zeka</span>
                     </p>
-                    <p data-i18n="about_p2">
-                        TEKNOFEST yarışmalarına katılıyor, askeri hedef tespiti için
-                        özel modeller eğitiyorum. Projelerimde üretimden deploy'a kadar
-                        tüm süreci yönetiyorum.
-                    </p>
-                    <div class="about-highlights">
-                        <div class="highlight">
-                            <div class="highlight-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <path d="M12 6v6l4 2"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <strong data-i18n="hl1_title">Gerçek Zamanlı Tespit</strong>
-                                <span data-i18n="hl1_desc">Video akışında canlı nesne tespiti</span>
-                            </div>
-                        </div>
-                        <div class="highlight">
-                            <div class="highlight-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <rect x="2" y="3" width="20" height="14" rx="2"/>
-                                    <path d="M8 21h8M12 17v4"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <strong data-i18n="hl2_title">Masaüstü Uygulamaları</strong>
-                                <span data-i18n="hl2_desc">Çoklu platform native uygulamalar</span>
-                            </div>
-                        </div>
-                        <div class="highlight">
-                            <div class="highlight-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0022 16z"/>
-                                    <path d="M7.5 4.21l4.5 2.6 4.5-2.6M7.5 19.79V14.6L3 12M21 12l-4.5 2.6v5.19M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <strong data-i18n="hl3_title">Model Eğitimi</strong>
-                                <span data-i18n="hl3_desc">Özel veri seti ile YOLO ince ayar</span>
-                            </div>
-                        </div>
+                    <h1 class="hero-name">Enes Soydan</h1>
+                    <p class="hero-lede" data-i18n="hero_lede">Kameranın gördüğünü anlamlı veriye dönüştüren sistemler geliştiriyorum: nesne tespiti, model eğitimi ve bu modelleri gerçekten kullanılabilir kılan araçlar.</p>
+                    <div class="hero-cta">
+                        <a href="#projects" class="btn btn-solid">
+                            <span data-i18n="cta_projects">Projeleri incele</span>
+                            <svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg>
+                        </a>
+                        <a href="mailto:enesssoydann@gmail.com" class="btn btn-outline">
+                            <svg class="icon-sm" aria-hidden="true"><use href="#i-mail"/></svg>
+                            <span data-i18n="cta_contact">İletişime geç</span>
+                        </a>
                     </div>
+                    <dl class="stats">
+                        <div class="stat">
+                            <dt data-i18n="stat_projects">Proje</dt>
+                            <dd>8</dd>
+                        </div>
+                        <div class="stat">
+                            <dt data-i18n="stat_open">Açık kaynak</dt>
+                            <dd>7</dd>
+                        </div>
+                        <div class="stat">
+                            <dt data-i18n="stat_focus">Odak</dt>
+                            <dd>CV</dd>
+                        </div>
+                    </dl>
                 </div>
-                <div class="about-visual reveal-right">
-                    <div class="code-window">
-                        <div class="code-header">
-                            <div class="code-dots">
-                                <span class="dot red"></span>
-                                <span class="dot yellow"></span>
-                                <span class="dot green"></span>
-                            </div>
-                            <span class="code-filename">enes_soydan.py</span>
-                        </div>
-                        <pre class="code-body"><code><span class="kw">class</span> <span class="cls">EnesSoydan</span>:
-    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="arg">self</span>):
-        <span class="arg">self</span>.role = <span class="str">"AI Developer"</span>
-        <span class="arg">self</span>.focus = [
-            <span class="str">"Computer Vision"</span>,
-            <span class="str">"Object Detection"</span>,
-            <span class="str">"Deep Learning"</span>
-        ]
-        <span class="arg">self</span>.stack = {
-            <span class="str">"ml"</span>: [<span class="str">"YOLO"</span>, <span class="str">"PyTorch"</span>],
-            <span class="str">"lang"</span>: [<span class="str">"Python"</span>, <span class="str">"SQL"</span>],
-            <span class="str">"tools"</span>: [<span class="str">"Docker"</span>, <span class="str">"Git"</span>]
-        }
 
-    <span class="kw">def</span> <span class="fn">build</span>(<span class="arg">self</span>):
-        <span class="kw">return</span> <span class="str">"Something amazing"</span></code></pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section class="section projects" id="projects">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag reveal-up" data-i18n="proj_tag">// PROJELER</span>
-                <h2 class="section-title reveal-up">
-                    <span data-i18n="proj_title_1">Seçilmiş</span>
-                    <span class="gradient-text" data-i18n="proj_title_2">çalışmalarım</span>
-                </h2>
-            </div>
-
-            <!-- Project 1: PlakaTespit -->
-            <div class="project-card reveal-up" id="project1">
-                <div class="project-card-inner" data-tilt>
-                    <div class="project-visual">
-                        <div class="project-img-wrapper shine">
-                            <img src="assets/projects/plaka_demo.jpg" alt="Plaka Tespit Uygulaması" class="project-img">
-                            <div class="project-img-overlay">
-                                <img src="assets\projects\plaka_tespit_ui.png" alt="Uygulama Arayüzü" class="project-img-hover">
-                            </div>
-                        </div>
-                        <div class="project-number">01</div>
-                    </div>
-                    <div class="project-info">
-                        <div class="project-tags">
-                            <span class="tag">YOLOv11</span>
-                            <span class="tag">PaddleOCR</span>
-                            <span class="tag">Flask</span>
-                            <span class="tag">Tkinter</span>
-                        </div>
-                        <h3 class="project-title" data-i18n="p1_title">Plaka Tespit Uygulaması</h3>
-                        <p class="project-desc" data-i18n="p1_desc">
-                            Gerçek zamanlı otomatik plaka tanıma sistemi (ANPR). Video akışında
-                            araçların plakalarını tespit edip, OCR ile okuyan ve veritabanına
-                            kaydeden uçtan uca bir çözüm. İki aşamalı pipeline:
-                            ilk model plakayı tespit eder, ikinci model karakterleri okur.
-                        </p>
-                        <div class="project-features">
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p1_f1">Canlı kamera / video dosyası desteği</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p1_f2">İki aşamalı YOLO + OCR pipeline</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p1_f3">Flask web arayüzü + Tkinter masaüstü</span>
-                            </div>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/EnesSoydan/PlakaTespitUygulamasi" target="_blank" rel="noopener noreferrer" class="project-link">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                                <span data-i18n="source_code">Kaynak Kod</span>
+                <aside class="profile-card" aria-label="Profil">
+                    <figure class="detect">
+                        <img src="assets/profile.jpg" alt="Enes Soydan" class="detect-img" width="320" height="320">
+                        <span class="bbox" aria-hidden="true">
+                            <span class="bbox-label">person 0.98</span>
+                        </span>
+                    </figure>
+                    <p class="card-heading" data-i18n="card_contact">İletişim</p>
+                    <ul class="contact-list">
+                        <li>
+                            <a href="mailto:enesssoydann@gmail.com" class="contact-row">
+                                <span class="contact-icon"><svg aria-hidden="true"><use href="#i-mail"/></svg></span>
+                                <span class="contact-text">
+                                    <strong data-i18n="email">E-posta</strong>
+                                    <span>enesssoydann@gmail.com</span>
+                                </span>
                             </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 2: Annotie -->
-            <div class="project-card reverse reveal-up" id="project2">
-                <div class="project-card-inner" data-tilt>
-                    <div class="project-visual">
-                        <div class="project-img-wrapper annotie-wrapper">
-                            <img src="assets/projects/annotie_icon.png" alt="Annotie" class="project-img annotie-logo">
-                            <div class="project-img-overlay">
-                                <img src="assets/projects/annotie_screenshot.png" alt="Annotie COCO Dataset" class="project-img-hover">
-                            </div>
-                        </div>
-                        <div class="project-number">02</div>
-                    </div>
-                    <div class="project-info">
-                        <div class="project-tags">
-                            <span class="tag">Python</span>
-                            <span class="tag">PySide6</span>
-                            <span class="tag">Qt6</span>
-                            <span class="tag">YOLO Format</span>
-                        </div>
-                        <h3 class="project-title">Annotie</h3>
-                        <p class="project-desc" data-i18n="p2_desc">
-                            YOLO formatında veri etiketleme aracı. Bounding box ve polygon
-                            annotation desteği, sınıf yönetimi, kolay klavye kısayolları
-                            ile hızlı etiketleme. Windows ve macOS için native build.
-                            Code signing ile dijital imzalı yükleyici.
-                        </p>
-                        <div class="project-features">
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p2_f1">YOLO format (bbox + polygon) desteği</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p2_f2">Windows + macOS çoklu platform</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p2_f3">Dijital imzalı yükleyici & Gatekeeper uyumlu</span>
-                            </div>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/EnesSoydan/Annotie" target="_blank" rel="noopener noreferrer" class="project-link">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                                <span data-i18n="source_code">Kaynak Kod</span>
+                        </li>
+                        <li>
+                            <a href="https://github.com/EnesSoydan" target="_blank" rel="noopener noreferrer" class="contact-row">
+                                <span class="contact-icon"><svg aria-hidden="true"><use href="#i-github"/></svg></span>
+                                <span class="contact-text">
+                                    <strong>GitHub</strong>
+                                    <span>github.com/EnesSoydan</span>
+                                </span>
                             </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 3: YOLO Visualizer -->
-            <div class="project-card reveal-up" id="project3">
-                <div class="project-card-inner" data-tilt>
-                    <div class="project-visual">
-                        <div class="project-img-wrapper yolo-vis-wrapper">
-                            <img src="assets/projects/yolo_gradcam.png" alt="YOLO Visualizer Grad-CAM" class="project-img">
-                            <div class="project-img-overlay">
-                                <img src="assets/projects/yolo_tsne.png" alt="t-SNE Gömmeleri" class="project-img-hover">
-                            </div>
-                        </div>
-                        <div class="project-number">03</div>
-                    </div>
-                    <div class="project-info">
-                        <div class="project-tags">
-                            <span class="tag">PyTorch</span>
-                            <span class="tag">Grad-CAM</span>
-                            <span class="tag">t-SNE</span>
-                            <span class="tag">Matplotlib</span>
-                        </div>
-                        <h3 class="project-title">YOLO Visualizer</h3>
-                        <p class="project-desc" data-i18n="p3_desc">
-                            YOLO modelinin nasıl öğrendiğini katman katman gösteren
-                            görselleştirme aracı. Feature map'ler, Grad-CAM ısı haritaları,
-                            konvolüsyon filtreleri ve t-SNE gömme analizi.
-                            Dahili uzman sistem ile model eğitim koçu.
-                        </p>
-                        <div class="project-features">
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p3_f1">4 farklı görselleştirme modu</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p3_f2">Grad-CAM: Model nereye bakıyor?</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p3_f3">Kural tabanlı yapay zeka eğitim koçu</span>
-                            </div>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/EnesSoydan/YoloVisualizer" target="_blank" rel="noopener noreferrer" class="project-link">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                                <span data-i18n="source_code">Kaynak Kod</span>
+                        </li>
+                        <li>
+                            <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer" class="contact-row">
+                                <span class="contact-icon"><svg aria-hidden="true"><use href="#i-linkedin"/></svg></span>
+                                <span class="contact-text">
+                                    <strong>LinkedIn</strong>
+                                    <span>Enes Soydan</span>
+                                </span>
                             </a>
-                        </div>
-                    </div>
-                </div>
+                        </li>
+                    </ul>
+                </aside>
             </div>
-            <!-- Project 4: YOLO Monitor -->
-            <div class="project-card reverse reveal-up" id="project4">
-                <div class="project-card-inner" data-tilt>
-                    <div class="project-visual">
-                        <div class="project-img-wrapper shine">
-                            <img src="assets/projects/yolo_monitor_train.png" alt="YOLO Monitor Eğitim" class="project-img">
-                            <div class="project-img-overlay">
-                                <img src="assets/projects/yolo_monitor_test.png" alt="YOLO Monitor Tespit" class="project-img-hover">
-                            </div>
-                        </div>
-                        <div class="project-number">04</div>
-                    </div>
-                    <div class="project-info">
-                        <div class="project-tags">
-                            <span class="tag">PySide6</span>
-                            <span class="tag">Ultralytics</span>
-                            <span class="tag">NVIDIA SMI</span>
-                            <span class="tag">YOLO</span>
-                        </div>
-                        <h3 class="project-title">YOLO Monitor</h3>
-                        <p class="project-desc" data-i18n="p4_desc">
-                            YOLO model eğitimi ve inference süreçlerini tek panelden yöneten
-                            masaüstü uygulaması. Gerçek zamanlı GPU/VRAM/CPU izleme, eğitim
-                            logları ve toplu nesne tespiti. Eğitim ve tespit tek arayüzde.
-                        </p>
-                        <div class="project-features">
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p4_f1">Gerçek zamanlı GPU/VRAM/CPU izleme</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p4_f2">Eğitim ve toplu tespit tek panelde</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p4_f3">Sınıf filtresi ve önizleme galerisi</span>
-                            </div>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/EnesSoydan/Yolo-Training-and-Inference" target="_blank" class="project-link">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                                <span data-i18n="source_code">Kaynak Kod</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        </section>
 
-            <!-- Project 5: Temassız Parmak İzi Kalite Analizi -->
-            <div class="project-card reveal-up" id="project5">
-                <div class="project-card-inner" data-tilt>
-                    <div class="project-visual">
-                        <div class="project-img-wrapper shine">
-                            <img src="assets/projects/fingerprint_live_obb.png" alt="Canlı OBB parmak ucu tespiti" class="project-img" loading="lazy">
-                            <div class="project-img-overlay">
-                                <img src="assets/projects/fingerprint_quality_pipeline.png" alt="Parmak izi ridge, iskelet ve minutiae kalite analizi" class="project-img-hover project-img-contain" loading="lazy">
-                            </div>
-                        </div>
-                        <div class="project-number">05</div>
-                    </div>
-                    <div class="project-info">
-                        <div class="project-tags">
-                            <span class="tag">Expo</span>
-                            <span class="tag">YOLO OBB</span>
-                            <span class="tag">ONNX Runtime</span>
-                            <span class="tag">Biometrics</span>
-                        </div>
-                        <h3 class="project-title" data-i18n="p5_title">Temassız Parmak İzi Kalite Analizi</h3>
-                        <p class="project-desc" data-i18n="p5_desc">
-                            Telefon kamerasından alınan parmak ucu görüntülerini YOLO OBB ile tespit eden;
-                            homografiyle kanonik ROI'ye hizalayıp segmentation, ridge/minutiae analizi ve
-                            yerel 1:N eşleştirme yapan mobil araştırma prototipi.
-                        </p>
-                        <div class="project-features">
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p5_f1">Cihaz üzerinde YOLO OBB + ONNX inference</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p5_f2">Ridge, skeleton ve minutiae kalite analizi</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p5_f3">Şifreli yerel enrollment ve 1:N eşleştirme</span>
-                            </div>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/EnesSoydan/temassiz-parmak-izi-kalite-analizi" target="_blank" rel="noopener noreferrer" class="project-link">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                                <span data-i18n="source_code">Kaynak Kod</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- Projects -->
+        <section class="section" id="projects" aria-labelledby="projects-title">
+            <div class="container">
+                <header class="section-head">
+                    <span class="section-num">01</span>
+                    <h2 class="section-title" id="projects-title" data-i18n="proj_title">Seçilmiş çalışmalar</h2>
+                    <p class="section-note" data-i18n="proj_note">Görselin üzerine gelince ikinci kare görünür.</p>
+                </header>
 
-            <!-- Project 6: ISTIKLAL TEKNOFEST -->
-            <div class="project-card reverse reveal-up" id="project6">
-                <div class="project-card-inner" data-tilt>
-                    <div class="project-visual">
-                        <div class="project-img-wrapper shine">
-                            <img src="assets/projects/istiklal_cockpit_balloons.png" alt="İSTİKLAL canlı nesne tespiti ve dijital ikiz kokpiti" class="project-img" loading="lazy">
-                            <div class="project-img-overlay">
-                                <img src="assets/projects/istiklal_cockpit_aircraft.png" alt="İSTİKLAL hava aracı tespiti ve takip arayüzü" class="project-img-hover" loading="lazy">
+                <ol class="projects">
+                    <!-- 01 Plaka -->
+                    <li class="project">
+                        <figure class="figure">
+                            <div class="frame">
+                                <img src="assets/projects/plaka_demo.jpg" alt="Plaka tespit uygulaması — canlı tespit" loading="lazy">
+                                <img src="assets/projects/plaka_tespit_ui.png" alt="Plaka tespit uygulaması — arayüz" class="alt" loading="lazy">
+                            </div>
+                            <figcaption><span class="fig-no" data-i18n="fig">Şekil</span> 1 — <span data-i18n="p1_cap">Canlı tespit / uygulama arayüzü</span></figcaption>
+                        </figure>
+                        <div class="project-body">
+                            <span class="project-index">01</span>
+                            <h3 class="project-title" data-i18n="p1_title">Plaka Tespit Uygulaması</h3>
+                            <p class="project-desc" data-i18n="p1_desc">Gerçek zamanlı otomatik plaka tanıma sistemi (ANPR). Video akışında araçların plakalarını tespit edip, OCR ile okuyan ve veritabanına kaydeden uçtan uca bir çözüm. İki aşamalı pipeline: ilk model plakayı tespit eder, ikinci model karakterleri okur.</p>
+                            <ul class="features">
+                                <li data-i18n="p1_f1">Canlı kamera / video dosyası desteği</li>
+                                <li data-i18n="p1_f2">İki aşamalı YOLO + OCR pipeline</li>
+                                <li data-i18n="p1_f3">Flask web arayüzü + Tkinter masaüstü</li>
+                            </ul>
+                            <div class="project-foot">
+                                <ul class="tags"><li>YOLOv11</li><li>PaddleOCR</li><li>Flask</li><li>Tkinter</li></ul>
+                                <a href="https://github.com/EnesSoydan/PlakaTespitUygulamasi" target="_blank" rel="noopener noreferrer" class="text-link"><span data-i18n="source_code">Kaynak kod</span><svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg></a>
                             </div>
                         </div>
-                        <div class="project-number">06</div>
-                    </div>
-                    <div class="project-info">
-                        <div class="project-tags">
-                            <span class="tag">TEKNOFEST</span>
-                            <span class="tag">YOLO</span>
-                            <span class="tag">OpenCV</span>
-                            <span class="tag">Dataset Curation</span>
-                        </div>
-                        <h3 class="project-title" data-i18n="p6_title">İSTİKLAL — TEKNOFEST Hava Savunma Sistemi</h3>
-                        <p class="project-desc" data-i18n="p6_desc">
-                            TEKNOFEST hava savunma senaryoları için geliştirilen, canlı kamerada hava araçları
-                            ve balonları tespit edip takip eden komuta-kontrol sistemi. Projedeki katkım; temiz
-                            veri seti oluşturma, nesne tespiti modelleri, makine öğrenmesi ve OpenCV tabanlı
-                            görüntü/renk filtreleriydi.
-                        </p>
-                        <div class="project-features">
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p6_f1">YOLO ile çok sınıflı gerçek zamanlı nesne tespiti</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p6_f2">Veri temizleme, etiket doğrulama ve model eğitimi</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p6_f3">OpenCV/HSV renk filtreleri ve hedef ayrımı</span>
-                            </div>
-                        </div>
-                        <div class="project-links">
-                            <span class="project-link project-link-private" data-i18n="private_repo">Repo özel</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    </li>
 
-            <!-- Project 7: WarShip Rating -->
-            <div class="project-card reveal-up" id="project7">
-                <div class="project-card-inner" data-tilt>
-                    <div class="project-visual">
-                        <div class="project-img-wrapper shine">
-                            <img src="assets/projects/warship_two_stage_sahi.png" alt="WarShip Rating gemi ve donanım tespiti" class="project-img" loading="lazy">
-                            <div class="project-img-overlay">
-                                <img src="assets/projects/warship_unity_rating.png" alt="Unity sentetik gemi verisinde sınıflandırma ve güç analizi" class="project-img-hover" loading="lazy">
+                    <!-- 02 Annotie -->
+                    <li class="project">
+                        <figure class="figure">
+                            <div class="frame">
+                                <img src="assets/projects/annotie_screenshot.png" alt="Annotie — COCO veri seti üzerinde etiketleme" loading="lazy">
+                                <img src="assets/projects/annotie_icon.png" alt="Annotie logosu" class="alt contain" loading="lazy">
+                            </div>
+                            <figcaption><span class="fig-no" data-i18n="fig">Şekil</span> 2 — <span data-i18n="p2_cap">Etiketleme ekranı / uygulama simgesi</span></figcaption>
+                        </figure>
+                        <div class="project-body">
+                            <span class="project-index">02</span>
+                            <h3 class="project-title">Annotie</h3>
+                            <p class="project-desc" data-i18n="p2_desc">YOLO formatında veri etiketleme aracı. Bounding box ve polygon annotation desteği, sınıf yönetimi, kolay klavye kısayolları ile hızlı etiketleme. Windows ve macOS için native build. Code signing ile dijital imzalı yükleyici.</p>
+                            <ul class="features">
+                                <li data-i18n="p2_f1">YOLO format (bbox + polygon) desteği</li>
+                                <li data-i18n="p2_f2">Windows + macOS çoklu platform</li>
+                                <li data-i18n="p2_f3">Dijital imzalı yükleyici & Gatekeeper uyumlu</li>
+                            </ul>
+                            <div class="project-foot">
+                                <ul class="tags"><li>Python</li><li>PySide6</li><li>Qt6</li><li>YOLO Format</li></ul>
+                                <a href="https://github.com/EnesSoydan/Annotie" target="_blank" rel="noopener noreferrer" class="text-link"><span data-i18n="source_code">Kaynak kod</span><svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg></a>
                             </div>
                         </div>
-                        <div class="project-number">07</div>
-                    </div>
-                    <div class="project-info">
-                        <div class="project-tags">
-                            <span class="tag">YOLO26s</span>
-                            <span class="tag">SAHI</span>
-                            <span class="tag">Unity 3D</span>
-                            <span class="tag">Tkinter</span>
-                        </div>
-                        <h3 class="project-title">WarShip Rating</h3>
-                        <p class="project-desc" data-i18n="p7_desc">
-                            Unity 3D ile üretilen sentetik verilerden savaş gemilerini ve üzerlerindeki silah
-                            sistemlerini iki aşamalı YOLO hattıyla tespit eden masaüstü uygulaması. SAHI ile
-                            küçük donanımları bulur ve her gemi için sayısal bir güç puanı hesaplar.
-                        </p>
-                        <div class="project-features">
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p7_f1">4 gemi ve 3 donanım sınıfı</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p7_f2">Unity ile sentetik, otomatik etiketli veri üretimi</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p7_f3">Gemi mAP@0.5: 0.995 · Donanım: 0.982</span>
-                            </div>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/EnesSoydan/WarShip_Rating" target="_blank" rel="noopener noreferrer" class="project-link">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                                <span data-i18n="source_code">Kaynak Kod</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    </li>
 
-            <!-- Project 8: GeoLens -->
-            <div class="project-card reverse reveal-up" id="project8">
-                <div class="project-card-inner" data-tilt>
-                    <div class="project-visual">
-                        <div class="project-img-wrapper shine">
-                            <img src="assets/projects/geolens_pipeline.svg" alt="GeoLens DINOv2, SALAD ve FAISS görsel konumlandırma hattı" class="project-img" loading="lazy">
-                            <div class="project-img-overlay">
-                                <img src="assets/projects/geolens_metrics.svg" alt="GeoLens MSLS validation performans sonuçları" class="project-img-hover" loading="lazy">
+                    <!-- 03 YOLO Visualizer -->
+                    <li class="project">
+                        <figure class="figure">
+                            <div class="frame">
+                                <img src="assets/projects/yolo_gradcam.png" alt="YOLO Visualizer — Grad-CAM" class="contain" loading="lazy">
+                                <img src="assets/projects/yolo_tsne.png" alt="YOLO Visualizer — t-SNE gömmeleri" class="alt" loading="lazy">
+                            </div>
+                            <figcaption><span class="fig-no" data-i18n="fig">Şekil</span> 3 — <span data-i18n="p3_cap">Grad-CAM / t-SNE gömmeleri</span></figcaption>
+                        </figure>
+                        <div class="project-body">
+                            <span class="project-index">03</span>
+                            <h3 class="project-title">YOLO Visualizer</h3>
+                            <p class="project-desc" data-i18n="p3_desc">YOLO modelinin nasıl öğrendiğini katman katman gösteren görselleştirme aracı. Feature map'ler, Grad-CAM ısı haritaları, konvolüsyon filtreleri ve t-SNE gömme analizi. Dahili uzman sistem ile model eğitim koçu.</p>
+                            <ul class="features">
+                                <li data-i18n="p3_f1">4 farklı görselleştirme modu</li>
+                                <li data-i18n="p3_f2">Grad-CAM: Model nereye bakıyor?</li>
+                                <li data-i18n="p3_f3">Kural tabanlı yapay zeka eğitim koçu</li>
+                            </ul>
+                            <div class="project-foot">
+                                <ul class="tags"><li>PyTorch</li><li>Grad-CAM</li><li>t-SNE</li><li>Matplotlib</li></ul>
+                                <a href="https://github.com/EnesSoydan/YoloVisualizer" target="_blank" rel="noopener noreferrer" class="text-link"><span data-i18n="source_code">Kaynak kod</span><svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg></a>
                             </div>
                         </div>
-                        <div class="project-number">08</div>
-                    </div>
-                    <div class="project-info">
-                        <div class="project-tags">
-                            <span class="tag">DINOv2</span>
-                            <span class="tag">SALAD</span>
-                            <span class="tag">FAISS</span>
-                            <span class="tag">Eigen-CAM</span>
-                        </div>
-                        <h3 class="project-title" data-i18n="p8_title">GeoLens — Açıklanabilir Görsel Konumlandırma</h3>
-                        <p class="project-desc" data-i18n="p8_desc">
-                            Bir sokak fotoğrafını DINOv2 + SALAD ile 8.448 boyutlu embedding'e dönüştürüp
-                            FAISS indeksinde en benzer referansları arayan retrieval-first sistem. Koordinat
-                            tahminini haritada ve Eigen-CAM ısı haritasıyla açıklanabilir biçimde sunar.
-                        </p>
-                        <div class="project-features">
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p8_f1">DINOv2 + SALAD ve FAISS benzerlik araması</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p8_f2">Eigen-CAM ile açıklanabilir konum tahmini</span>
-                            </div>
-                            <div class="feature">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                                <span data-i18n="p8_f3">MSLS-val: R@1: %91,9 · R@5: %96,4 · medyan 8 m</span>
-                            </div>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/EnesSoydan/GeoLens" target="_blank" rel="noopener noreferrer" class="project-link">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                                <span data-i18n="source_code">Kaynak Kod</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                    </li>
 
-    <!-- Tech Stack Section -->
-    <section class="section tech" id="tech">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag reveal-up" data-i18n="tech_tag">// TEKNOLOJİLER</span>
-                <h2 class="section-title reveal-up">
-                    <span data-i18n="tech_title_1">Kullandığım</span>
-                    <span class="gradient-text" data-i18n="tech_title_2">araçlar</span>
-                </h2>
-            </div>
-            <div class="tech-orbit reveal-up">
-                <div class="orbit-rings" aria-hidden="true">
-                    <span class="orbit-ring orbit-ring-1"></span>
-                    <span class="orbit-ring orbit-ring-2"></span>
-                    <span class="orbit-ring orbit-ring-3"></span>
-                    <span class="orbit-satellite orbit-satellite-1"></span>
-                    <span class="orbit-satellite orbit-satellite-2"></span>
-                </div>
-                <div class="orbit-center">
-                    <span>AI<br>&<br>CV</span>
-                </div>
-                <div class="tech-grid">
-                    <div class="tech-card" data-category="ml">
-                        <div class="tech-card-icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                            </svg>
+                    <!-- 04 YOLO Monitor -->
+                    <li class="project">
+                        <figure class="figure">
+                            <div class="frame">
+                                <img src="assets/projects/yolo_monitor_train.png" alt="YOLO Monitor — eğitim paneli" loading="lazy">
+                                <img src="assets/projects/yolo_monitor_test.png" alt="YOLO Monitor — toplu tespit" class="alt" loading="lazy">
+                            </div>
+                            <figcaption><span class="fig-no" data-i18n="fig">Şekil</span> 4 — <span data-i18n="p4_cap">Eğitim paneli / toplu tespit</span></figcaption>
+                        </figure>
+                        <div class="project-body">
+                            <span class="project-index">04</span>
+                            <h3 class="project-title">YOLO Monitor</h3>
+                            <p class="project-desc" data-i18n="p4_desc">YOLO model eğitimi ve inference süreçlerini tek panelden yöneten masaüstü uygulaması. Gerçek zamanlı GPU/VRAM/CPU izleme, eğitim logları ve toplu nesne tespiti. Eğitim ve tespit tek arayüzde.</p>
+                            <ul class="features">
+                                <li data-i18n="p4_f1">Gerçek zamanlı GPU/VRAM/CPU izleme</li>
+                                <li data-i18n="p4_f2">Eğitim ve toplu tespit tek panelde</li>
+                                <li data-i18n="p4_f3">Sınıf filtresi ve önizleme galerisi</li>
+                            </ul>
+                            <div class="project-foot">
+                                <ul class="tags"><li>PySide6</li><li>Ultralytics</li><li>NVIDIA SMI</li><li>YOLO</li></ul>
+                                <a href="https://github.com/EnesSoydan/Yolo-Training-and-Inference" target="_blank" rel="noopener noreferrer" class="text-link"><span data-i18n="source_code">Kaynak kod</span><svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                            </div>
                         </div>
-                        <span class="tech-name">PyTorch</span>
-                        <span class="tech-cat" data-i18n="tc_dl">Derin Öğrenme</span>
-                    </div>
-                    <div class="tech-card" data-category="ml">
-                        <div class="tech-card-icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                                <circle cx="8.5" cy="8.5" r="1.5"/>
-                                <path d="M21 15l-5-5L5 21"/>
-                            </svg>
-                        </div>
-                        <span class="tech-name">YOLO</span>
-                        <span class="tech-cat" data-i18n="tc_od">Nesne Tespiti</span>
-                    </div>
-                    <div class="tech-card" data-category="lang">
-                        <div class="tech-card-icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/>
-                                <path d="M8 12l2 2 4-4"/>
-                            </svg>
-                        </div>
-                        <span class="tech-name">Python</span>
-                        <span class="tech-cat" data-i18n="tc_prog">Programlama</span>
-                    </div>
-                    <div class="tech-card" data-category="ml">
-                        <div class="tech-card-icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M2 12C2 6.48 6.48 2 12 2s10 4.48 10 10"/>
-                                <path d="M12 2c-3 4-3 14 0 20"/>
-                                <path d="M2 12h20"/>
-                            </svg>
-                        </div>
-                        <span class="tech-name">OpenCV</span>
-                        <span class="tech-cat" data-i18n="tc_ip">Görüntü İşleme</span>
-                    </div>
-                    <div class="tech-card" data-category="tools">
-                        <div class="tech-card-icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                                <polyline points="22,6 12,13 2,6"/>
-                            </svg>
-                        </div>
-                        <span class="tech-name">Docker</span>
-                        <span class="tech-cat">Container</span>
-                    </div>
-                    <div class="tech-card" data-category="ui">
-                        <div class="tech-card-icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <rect x="2" y="3" width="20" height="14" rx="2"/>
-                                <path d="M8 21h8M12 17v4"/>
-                            </svg>
-                        </div>
-                        <span class="tech-name">Qt / PySide6</span>
-                        <span class="tech-cat" data-i18n="tc_desktop">Masaüstü Arayüzü</span>
-                    </div>
-                    <div class="tech-card" data-category="tools">
-                        <div class="tech-card-icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <circle cx="12" cy="12" r="3"/>
-                                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-                            </svg>
-                        </div>
-                        <span class="tech-name">Flask</span>
-                        <span class="tech-cat" data-i18n="tc_web">Web Sunucusu</span>
-                    </div>
-                    <div class="tech-card" data-category="tools">
-                        <div class="tech-card-icon">
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M15 22v-4a4.8 4.8 0 00-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 004 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/>
-                                <path d="M9 18c-4.51 2-5-2-7-2"/>
-                            </svg>
-                        </div>
-                        <span class="tech-name">Git</span>
-                        <span class="tech-cat" data-i18n="tc_vc">Versiyon Kontrol</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                    </li>
 
-    <!-- Contact Section -->
-    <section class="section contact" id="contact">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag reveal-up" data-i18n="contact_tag">// İLETİŞİM</span>
-                <h2 class="section-title reveal-up">
-                    <span data-i18n="contact_title_1">Birlikte</span>
-                    <span class="gradient-text" data-i18n="contact_title_2">çalışalım</span>
-                </h2>
+                    <!-- 05 Parmak izi -->
+                    <li class="project">
+                        <figure class="figure">
+                            <div class="frame">
+                                <img src="assets/projects/fingerprint_live_obb.png" alt="Canlı OBB parmak ucu tespiti" loading="lazy">
+                                <img src="assets/projects/fingerprint_quality_pipeline.png" alt="Ridge, iskelet ve minutiae kalite analizi" class="alt contain" loading="lazy">
+                            </div>
+                            <figcaption><span class="fig-no" data-i18n="fig">Şekil</span> 5 — <span data-i18n="p5_cap">Canlı OBB tespiti / kalite analizi hattı</span></figcaption>
+                        </figure>
+                        <div class="project-body">
+                            <span class="project-index">05</span>
+                            <h3 class="project-title" data-i18n="p5_title">Temassız Parmak İzi Kalite Analizi</h3>
+                            <p class="project-desc" data-i18n="p5_desc">Telefon kamerasından alınan parmak ucu görüntülerini YOLO OBB ile tespit eden; homografiyle kanonik ROI'ye hizalayıp segmentation, ridge/minutiae analizi ve yerel 1:N eşleştirme yapan mobil araştırma prototipi.</p>
+                            <ul class="features">
+                                <li data-i18n="p5_f1">Cihaz üzerinde YOLO OBB + ONNX inference</li>
+                                <li data-i18n="p5_f2">Ridge, skeleton ve minutiae kalite analizi</li>
+                                <li data-i18n="p5_f3">Şifreli yerel enrollment ve 1:N eşleştirme</li>
+                            </ul>
+                            <div class="project-foot">
+                                <ul class="tags"><li>Expo</li><li>YOLO OBB</li><li>ONNX Runtime</li><li>Biometrics</li></ul>
+                                <a href="https://github.com/EnesSoydan/temassiz-parmak-izi-kalite-analizi" target="_blank" rel="noopener noreferrer" class="text-link"><span data-i18n="source_code">Kaynak kod</span><svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- 06 İSTİKLAL -->
+                    <li class="project">
+                        <figure class="figure">
+                            <div class="frame">
+                                <img src="assets/projects/istiklal_cockpit_balloons.png" alt="İSTİKLAL — balon tespiti ve dijital ikiz kokpiti" loading="lazy">
+                                <img src="assets/projects/istiklal_cockpit_aircraft.png" alt="İSTİKLAL — hava aracı tespiti ve takip" class="alt" loading="lazy">
+                            </div>
+                            <figcaption><span class="fig-no" data-i18n="fig">Şekil</span> 6 — <span data-i18n="p6_cap">Balon tespiti / hava aracı takibi</span></figcaption>
+                        </figure>
+                        <div class="project-body">
+                            <span class="project-index">06</span>
+                            <h3 class="project-title" data-i18n="p6_title">İSTİKLAL — TEKNOFEST Hava Savunma Sistemi</h3>
+                            <p class="project-desc" data-i18n="p6_desc">TEKNOFEST hava savunma senaryoları için geliştirilen, canlı kamerada hava araçları ve balonları tespit edip takip eden komuta-kontrol sistemi. Projedeki katkım; temiz veri seti oluşturma, nesne tespiti modelleri, makine öğrenmesi ve OpenCV tabanlı görüntü/renk filtreleriydi.</p>
+                            <ul class="features">
+                                <li data-i18n="p6_f1">YOLO ile çok sınıflı gerçek zamanlı nesne tespiti</li>
+                                <li data-i18n="p6_f2">Veri temizleme, etiket doğrulama ve model eğitimi</li>
+                                <li data-i18n="p6_f3">OpenCV/HSV renk filtreleri ve hedef ayrımı</li>
+                            </ul>
+                            <div class="project-foot">
+                                <ul class="tags"><li>TEKNOFEST</li><li>YOLO</li><li>OpenCV</li><li>Dataset Curation</li></ul>
+                                <span class="text-link is-muted" data-i18n="private_repo">Repo özel</span>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- 07 WarShip -->
+                    <li class="project">
+                        <figure class="figure">
+                            <div class="frame">
+                                <img src="assets/projects/warship_two_stage_sahi.png" alt="WarShip Rating — gemi ve donanım tespiti" loading="lazy">
+                                <img src="assets/projects/warship_unity_rating.png" alt="WarShip Rating — Unity sentetik veride güç analizi" class="alt" loading="lazy">
+                            </div>
+                            <figcaption><span class="fig-no" data-i18n="fig">Şekil</span> 7 — <span data-i18n="p7_cap">İki aşamalı SAHI tespiti / güç puanı</span></figcaption>
+                        </figure>
+                        <div class="project-body">
+                            <span class="project-index">07</span>
+                            <h3 class="project-title">WarShip Rating</h3>
+                            <p class="project-desc" data-i18n="p7_desc">Unity 3D ile üretilen sentetik verilerden savaş gemilerini ve üzerlerindeki silah sistemlerini iki aşamalı YOLO hattıyla tespit eden masaüstü uygulaması. SAHI ile küçük donanımları bulur ve her gemi için sayısal bir güç puanı hesaplar.</p>
+                            <ul class="features">
+                                <li data-i18n="p7_f1">4 gemi ve 3 donanım sınıfı</li>
+                                <li data-i18n="p7_f2">Unity ile sentetik, otomatik etiketli veri üretimi</li>
+                                <li data-i18n="p7_f3">Gemi mAP@0.5: 0.995 · Donanım: 0.982</li>
+                            </ul>
+                            <div class="project-foot">
+                                <ul class="tags"><li>YOLO26s</li><li>SAHI</li><li>Unity 3D</li><li>Tkinter</li></ul>
+                                <a href="https://github.com/EnesSoydan/WarShip_Rating" target="_blank" rel="noopener noreferrer" class="text-link"><span data-i18n="source_code">Kaynak kod</span><svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- 08 GeoLens -->
+                    <li class="project">
+                        <figure class="figure">
+                            <div class="frame">
+                                <img src="assets/projects/geolens_pipeline.svg" alt="GeoLens — DINOv2, SALAD ve FAISS hattı" class="contain" loading="lazy">
+                                <img src="assets/projects/geolens_metrics.svg" alt="GeoLens — MSLS validation sonuçları" class="alt contain" loading="lazy">
+                            </div>
+                            <figcaption><span class="fig-no" data-i18n="fig">Şekil</span> 8 — <span data-i18n="p8_cap">Retrieval hattı / MSLS sonuçları</span></figcaption>
+                        </figure>
+                        <div class="project-body">
+                            <span class="project-index">08</span>
+                            <h3 class="project-title" data-i18n="p8_title">GeoLens — Açıklanabilir Görsel Konumlandırma</h3>
+                            <p class="project-desc" data-i18n="p8_desc">Bir sokak fotoğrafını DINOv2 + SALAD ile 8.448 boyutlu embedding'e dönüştürüp FAISS indeksinde en benzer referansları arayan retrieval-first sistem. Koordinat tahminini haritada ve Eigen-CAM ısı haritasıyla açıklanabilir biçimde sunar.</p>
+                            <ul class="features">
+                                <li data-i18n="p8_f1">DINOv2 + SALAD ve FAISS benzerlik araması</li>
+                                <li data-i18n="p8_f2">Eigen-CAM ile açıklanabilir konum tahmini</li>
+                                <li data-i18n="p8_f3">MSLS-val: R@1: %91,9 · R@5: %96,4 · medyan 8 m</li>
+                            </ul>
+                            <div class="project-foot">
+                                <ul class="tags"><li>DINOv2</li><li>SALAD</li><li>FAISS</li><li>Eigen-CAM</li></ul>
+                                <a href="https://github.com/EnesSoydan/GeoLens" target="_blank" rel="noopener noreferrer" class="text-link"><span data-i18n="source_code">Kaynak kod</span><svg class="icon-sm" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
             </div>
-            <div class="contact-content reveal-up">
-                <p class="contact-text" data-i18n="contact_text">
-                    Yeni projeler, iş birlikleri veya sadece merhaba demek için
-                    bana ulaşabilirsiniz.
-                </p>
-                <div class="contact-links">
-                    <a href="https://github.com/EnesSoydan" target="_blank" class="contact-card">
-                        <div class="contact-card-icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                        </div>
-                        <div class="contact-card-info">
-                            <span class="contact-card-label">GitHub</span>
-                            <span class="contact-card-value">EnesSoydan</span>
-                        </div>
-                        <svg class="contact-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-                    </a>
-                    <a href="https://linkedin.com/in/" target="_blank" class="contact-card">
-                        <div class="contact-card-icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                        </div>
-                        <div class="contact-card-info">
-                            <span class="contact-card-label">LinkedIn</span>
-                            <span class="contact-card-value">Enes Soydan</span>
-                        </div>
-                        <svg class="contact-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-                    </a>
-                    <a href="mailto:enesssoydann@gmail.com" class="contact-card">
-                        <div class="contact-card-icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
-                        </div>
-                        <div class="contact-card-info">
-                            <span class="contact-card-label">Email</span>
-                            <span class="contact-card-value" data-i18n="contact_email">İletişime geç</span>
-                        </div>
-                        <svg class="contact-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-                    </a>
+        </section>
+
+        <!-- About -->
+        <section class="section" id="about" aria-labelledby="about-title">
+            <div class="container">
+                <header class="section-head">
+                    <span class="section-num">02</span>
+                    <h2 class="section-title" id="about-title" data-i18n="about_title">Hakkımda</h2>
+                </header>
+                <div class="about-grid">
+                    <div class="about-text">
+                        <p data-i18n="about_p1">Merhaba, ben Enes. Bilgisayarlı görme ve derin öğrenme üzerine çalışıyorum; çoğunlukla YOLO tabanlı nesne tespiti.</p>
+                        <p data-i18n="about_p2">Projelerimde genelde işin tamamını yapıyorum: veriyi hazırlıyorum, modeli eğitiyorum, sonra da kullanılabilmesi için bir masaüstü ya da mobil uygulamaya dönüştürüyorum. Annotie, YOLO Monitor ve YOLO Visualizer da bu sürecin parçaları için yazdığım araçlar: etiketleme, eğitimi takip etme ve modelin neye baktığını görme.</p>
+                        <p data-i18n="about_p3">TEKNOFEST'te İSTİKLAL ekibinde veri seti hazırlama ve tespit modelleri tarafında çalıştım.</p>
+                        <p data-i18n="about_p4">Şu sıralar gerçek zamanlı tespit, sentetik veri üretimi ve Grad-CAM, Eigen-CAM gibi açıklanabilirlik yöntemleriyle ilgileniyorum.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
+        <!-- Tools -->
+        <section class="section" id="tools" aria-labelledby="tools-title">
+            <div class="container">
+                <header class="section-head">
+                    <span class="section-num">03</span>
+                    <h2 class="section-title" id="tools-title" data-i18n="tools_title">Araçlar</h2>
+                </header>
+                <dl class="tools">
+                    <div class="tools-row">
+                        <dt data-i18n="tg_ml">Derin öğrenme</dt>
+                        <dd><ul><li>PyTorch</li><li>Ultralytics YOLO</li><li>ONNX Runtime</li><li>DINOv2</li><li>FAISS</li><li>SAHI</li></ul></dd>
+                    </div>
+                    <div class="tools-row">
+                        <dt data-i18n="tg_cv">Görüntü işleme</dt>
+                        <dd><ul><li>OpenCV</li><li>PaddleOCR</li><li>Grad-CAM</li><li>t-SNE</li></ul></dd>
+                    </div>
+                    <div class="tools-row">
+                        <dt data-i18n="tg_app">Uygulama</dt>
+                        <dd><ul><li>Python</li><li>PySide6 / Qt6</li><li>Tkinter</li><li>Flask</li><li>Expo</li><li>Unity 3D</li></ul></dd>
+                    </div>
+                    <div class="tools-row">
+                        <dt data-i18n="tg_tools">Altyapı</dt>
+                        <dd><ul><li>Docker</li><li>Git</li><li>Linux</li><li>NVIDIA SMI</li></ul></dd>
+                    </div>
+                </dl>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="section contact" id="contact" aria-labelledby="contact-title">
+            <div class="container">
+                <header class="section-head">
+                    <span class="section-num">04</span>
+                    <h2 class="section-title" id="contact-title" data-i18n="contact_title">İletişim</h2>
+                </header>
+                <p class="contact-lead" data-i18n="contact_text">Yeni projeler, iş birlikleri veya sadece merhaba demek için yazabilirsiniz.</p>
+                <a class="contact-mail" href="mailto:enesssoydann@gmail.com">enesssoydann@gmail.com<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            </div>
+        </section>
+    </main>
+
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <span class="footer-logo">
-                    <span class="nav-logo-bracket">&lt;</span>ES<span class="nav-logo-bracket">/&gt;</span>
-                </span>
-                <span class="footer-copy">Enes Soydan &mdash; 2026</span>
-            </div>
+        <div class="container footer-inner">
+            <span>© <span id="year">2026</span> Enes Soydan</span>
+            <span class="footer-links">
+                <a href="https://github.com/EnesSoydan" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://linkedin.com/in/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href="#top" data-i18n="back_top">Başa dön</a>
+            </span>
         </div>
     </footer>
 
